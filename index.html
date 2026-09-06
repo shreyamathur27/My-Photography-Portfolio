@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Minimal Photography Portfolio</title>
+  
+  <!-- Inter Font from Google Fonts for a modern, clean sans-serif look -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       1. GLOBAL STYLES & RESET
+       ========================================================================== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #ffffff;
+      color: #111111;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      padding: 40px 5%;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    /* ==========================================================================
+       2. HEADER SECTION
+       ========================================================================== */
+    header {
+      margin-bottom: 30px;
+    }
+
+    .profile-container {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .profile-img {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .username {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .divider {
+      height: 1px;
+      background-color: #f0f0f0;
+      border: none;
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: #888888;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    /* ==========================================================================
+       3. MASONRY PHOTO GRID
+       ========================================================================== */
+    /* CSS Columns allow natural mixed-aspect ratios to stack smoothly */
+    .gallery-grid {
+      column-count: 4;
+      column-gap: 16px;
+    }
+
+    .gallery-item {
+      break-inside: avoid;
+      margin-bottom: 16px;
+      cursor: pointer;
+      overflow: hidden;
+      background-color: #f7f7f7;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: opacity 0.3s ease, transform 0.4s ease;
+    }
+
+    /* VSCO-style subtle hover effect */
+    .gallery-item:hover img {
+      opacity: 0.9;
+      transform: scale(1.015);
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 1024px) {
+      .gallery-grid {
+        column-count: 2;
+      }
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 24px 16px;
+      }
+      
+      .gallery-grid {
+        column-count: 1;
+      }
+
+      .profile-img {
+        width: 52px;
+        height: 52px;
+      }
+
+      .username {
+        font-size: 1.1rem;
+      }
+    }
+
+    /* ==========================================================================
+       4. LIGHTBOX / FULLSCREEN VIEWER
+       ========================================================================== */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(255, 255, 255, 0.98);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      z-index: 1000;
+    }
+
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .lightbox-img {
+      max-width: 90vw;
+      max-height: 85vh;
+      object-fit: contain;
+      user-select: none;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Lightbox Controls */
+    .lightbox-btn {
+      position: absolute;
+      background: none;
+      border: none;
+      color: #111111;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s ease;
+      z-index: 1010;
+      line-height: 1;
+    }
+
+    .lightbox-btn:hover {
+      opacity: 0.5;
+    }
+
+    .lightbox-close {
+      top: 20px;
+      right: 24px;
+      font-size: 1.75rem;
+      font-weight: 300;
+    }
+
+    .lightbox-prev {
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .lightbox-next {
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER SECTION -->
+  <header>
+    <div class="profile-container">
+      <!-- EDIT USER PROFILE PICTURE BELOW -->
+      <img 
+        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" 
+        alt="Profile Picture" 
+        class="profile-img" 
+      />
+      
+      <!-- EDIT USERNAME / TITLE BELOW -->
+      <h1 class="username">shreyamathur00</h1>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="section-title">RECENT</div>
+  </header>
+
+  <!-- PHOTO GRID GALLERY -->
+  <main class="gallery-grid" id="gallery">
+    
+    <!-- 
+      ========================================================================
+      IMAGE LIST
+      Swap out the 'src' attributes below with your own image URLs.
+      Aspect ratios (portrait, landscape, square) are handled automatically.
+      ========================================================================
+    -->
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80" alt="Photo 1" loading="lazy" /></div>
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800&q=80" alt="Photo 2" loading="lazy" /></div>
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=800&q=80" alt="Photo 3" loading="lazy" /></div>
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1488161628813-04466f872be2?auto=format&fit=crop&w=800&q=80" alt="Photo 4" loading="lazy" /></div>
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80" alt="Photo 5" loading="lazy" /></div>
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=800&q=80" alt="Photo 6" loading="lazy" /></div>
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80" alt="Photo 7" loading="lazy" /></div>
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800&q=80" alt="Photo 8" loading="lazy" /></div>
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=800&q=80" alt="Photo 9" loading="lazy" /></div>
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=800&q=80" alt="Photo 10" loading="lazy" /></div>
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80" alt="Photo 11" loading="lazy" /></div>
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=800&q=80" alt="Photo 12" loading="lazy" /></div>
+
+  </main>
+
+  <!-- LIGHTBOX / FULLSCREEN VIEWER -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-btn lightbox-close" id="lightbox-close" aria-label="Close Viewer">✕</button>
+    <button class="lightbox-btn lightbox-prev" id="lightbox-prev" aria-label="Previous Image">✕</button>
+    <button class="lightbox-btn lightbox-next" id="lightbox-next" aria-label="Next Image">✕</button>
+    <img src="" alt="Fullscreen view" class="lightbox-img" id="lightbox-img" />
+  </div>
+
+  <!-- JAVASCRIPT FOR LIGHTBOX INTERACTION -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const galleryItems = document.querySelectorAll('.gallery-item img');
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const closeBtn = document.getElementById('lightbox-close');
+      const prevBtn = document.getElementById('lightbox-prev');
+      const nextBtn = document.getElementById('lightbox-next');
+
+      // Update arrow icons
+      prevBtn.innerHTML = '&#8592;'; // Left Arrow (←)
+      nextBtn.innerHTML = '&#8594;'; // Right Arrow (→)
+
+      let currentIndex = 0;
+      const imagesArray = Array.from(galleryItems);
+
+      // Open Lightbox
+      function openLightbox(index) {
+        currentIndex = index;
+        lightboxImg.src = imagesArray[currentIndex].src;
+        lightbox.classList.add('active');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden'; // Lock background scrolling
+      }
+
+      // Close Lightbox
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = ''; // Restore scrolling
+      }
+
+      // Show Next Image
+      function showNext() {
+        currentIndex = (currentIndex + 1) % imagesArray.length;
+        lightboxImg.src = imagesArray[currentIndex].src;
+      }
+
+      // Show Previous Image
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + imagesArray.length) % imagesArray.length;
+        lightboxImg.src = imagesArray[currentIndex].src;
+      }
+
+      // Attach Click Events to Gallery Items
+      imagesArray.forEach((img, index) => {
+        img.parentElement.addEventListener('click', () => openLightbox(index));
+      });
+
+      // Lightbox Button Events
+      closeBtn.addEventListener('click', closeLightbox);
+      nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showNext();
+      });
+      prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showPrev();
+      });
+
+      // Close when clicking background outside image
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
+          closeLightbox();
+        }
+      });
+
+      // Keyboard Controls
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+
+        if (e.key === 'Escape') {
+          closeLightbox();
+        } else if (e.key === 'ArrowRight') {
+          showNext();
+        } else if (e.key === 'ArrowLeft') {
+          showPrev();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
